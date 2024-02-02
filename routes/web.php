@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenulisController;
 use App\Http\Controllers\SiswaController;
 use App\Models\Siswa;
@@ -31,3 +32,6 @@ Route::delete('/siswa/{id}',[SiswaController::class,'destroy'])
 
 Route::resource('penulis', PenulisController::class);
 Route::resource('buku',BukuController::class);
+Route::resource('login',LoginController::class);
+Route::get('register',[LoginController::class,'register'])
+->name('register');

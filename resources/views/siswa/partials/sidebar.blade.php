@@ -39,7 +39,7 @@
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
-                <li class="nav-item {{ Route::is('siswa') || Route::is('siswa.create') || Route::is('siswa.edit') || Route::is('penulis.index') || Route::is('penulis.create') || Route::is('penulis.edit') ? 'menu-open' : '' }}">
+                <li class="nav-item {{ Route::is('siswa') || Route::is('siswa.create') || Route::is('siswa.edit') || Route::is('penulis.index') || Route::is('penulis.create') || Route::is('penulis.edit') || Route::is('buku.index') || Route::is('buku.create') || Route::is('buku.edit') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -55,7 +55,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('buku.index') }}" class="nav-link ">
+                            <a href="{{ route('buku.index') }}" class="nav-link {{Route::is('buku.index') || Route::is('buku.create') || Route::is('buku.edit') ? 'active' : ''}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Buku</p>
                             </a>
@@ -66,6 +66,14 @@
                             || Route::is('penulis.edit') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Penulis</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('penulis.index') }}" class="nav-link 
+                            {{ Route::is('penulis.index') || Route::is('penulis.create') 
+                            || Route::is('penulis.edit') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Peminjaman</p>
                             </a>
                         </li>
                     </ul>

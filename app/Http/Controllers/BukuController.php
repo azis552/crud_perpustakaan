@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Penulis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
 {
@@ -21,7 +23,8 @@ class BukuController extends Controller
      */
     public function create()
     {
-        //
+        $data = Penulis::all();
+        return view('buku.create',['penulis'=>$data]);
     }
 
     /**
@@ -29,7 +32,22 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasi = $request->validate([
+            'judul_buku' => 'required',
+            'tahun_terbit' => 'required',
+            'isbn' => 'required',
+            'id_penulis' => 'required',
+            'genre' => 'required',
+            'tempat_terbit' => 'required',
+            'penerbit' => 'required'
+        ]);
+        $imageName = time().'.'.$request->photo->extension();  
+        $request->photo->storeAs('public', $imageName);
+        $validasi['photo'] = $imageName;
+        Buku::create($validasi);
+
+        return redirect('/buku')
+        ->with('success','berhasil menambahakna buku');
     }
 
     /**
@@ -45,7 +63,10 @@ class BukuController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $penulis=Penulis::all();
+        $data=Buku::findOrFail($id);
+
+        return view('buku.edit',['data'=>$data,'penulis'=>$penulis]);
     }
 
     /**
@@ -53,7 +74,26 @@ class BukuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validasi = $request->validate([
+            'judul_buku' => 'required',
+            'tahun_terbit' => 'required',
+            'isbn' => 'required',
+            'id_penulis' => 'required',
+            'genre' => 'required',
+            'tempat_terbit' => 'required',
+            'penerbit' => 'required'
+        ]);
+
+        $data=Buku::findOrFail($id);
+        if ($data->photo) {
+            Storage::disk('public')->delete($data->photo);
+        }
+        $imageName = time().'.'.$request->photo->extension();  
+        $request->photo->storeAs('public', $imageName);
+        $validasi['photo'] = $imageName;
+        $data->update($validasi);
+        return redirect('/buku')
+        ->with('success','berhasil mengupdate buku');
     }
 
     /**
@@ -62,6 +102,9 @@ class BukuController extends Controller
     public function destroy(string $id)
     {
         $data = Buku::findOrFail($id);
+        if ($data->photo) {
+            Storage::disk('public')->delete($data->photo);
+        }
         $data->delete();
         return redirect('/buku')->with('success','sukses delete');
     }

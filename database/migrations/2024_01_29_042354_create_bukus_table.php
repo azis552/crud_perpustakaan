@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('genre')->nullable();
             $table->string('tempat_terbit')->nullable();
             $table->string('penerbit')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
 
             $table->foreign('id_penulis')->references('id')->on('penulis');

@@ -38,14 +38,15 @@
                             {{ session('success') }}
                          </div>
                         @endif
-                        <a type="button" href=" {{  route('penulis.create') }} " class="btn btn-info mb-2">
-                            Tambah Penulis</a>
+                        <a type="button" href=" {{  route('buku.create') }} " class="btn btn-info mb-2">
+                            Tambah Buku</a>
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <th>No</th>
                                     <th>Judul</th>
                                     <th>Tahun Terbit</th>
                                     <th>Penulis</th>
+                                    <th>Sampul</th>
                                     <th>Aksi</th>
                                 </thead>
                                 <tbody>
@@ -55,6 +56,9 @@
                                             <td>{{ $item->judul_buku }}</td>
                                             <td>{{ $item->tahun_terbit }} </td>
                                             <td>{{ $item->penulis->nama }} </td>
+                                            <td>
+                                                <img src="{{ asset('storage/'.$item->photo) }}" alt="" height="60">
+                                            </td>
                                             <td>
                                                 <form action="{{ route('buku.destroy', $item->id) }}" method="post">
                                                     @csrf
