@@ -35,3 +35,7 @@ Route::resource('buku',BukuController::class);
 Route::resource('login',LoginController::class);
 Route::get('register',[LoginController::class,'register'])
 ->name('register');
+Route::post('login_check',[LoginController::class,'login_check'])
+->name('login_check');
+Route::get('logout',[LoginController::class,'logout'])
+->name('logout');

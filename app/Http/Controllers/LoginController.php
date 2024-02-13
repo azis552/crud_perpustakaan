@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -30,7 +34,29 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator =  Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required',
+            'terms' => 'required',
+        ], [
+            'terms.required' => 'Anda harus menyetujui persyaratan 
+            dan ketentuan.',
+        ]);
+        if ($validator->fails()) {
+            return redirect('register')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect('/login')->with('success', 
+        'Akun Anda berhasil dibuat!');
     }
 
     /**
@@ -63,5 +89,27 @@ class LoginController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function login_check(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/siswa');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+    public function logout()
+    {
+        Auth::logout(); // Log out pengguna
+        return redirect('/login'); // Redirect ke halaman utama setelah logout
     }
 }
