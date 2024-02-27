@@ -43,5 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('penulis', PenulisController::class);
     Route::resource('buku', BukuController::class);
+    Route::get('peminjaman/{id}/bukti_pinjam',
+    [PeminjamanController::class,'bukti_pinjam'])
+    ->name('peminjaman.bukti_pinjam');
     Route::resource('peminjaman',PeminjamanController::class);
 });

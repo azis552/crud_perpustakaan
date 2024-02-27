@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\PeminjamanBuku;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
@@ -13,7 +15,9 @@ class PeminjamanController extends Controller
     public function index()
     {
         $data = PeminjamanBuku::all();
-        return view('peminjaman.index',['data'=> $data]);
+        $siswa = Siswa::all();
+        $buku = Buku::all();
+        return view('peminjaman.index',['data'=> $data,'siswa' =>$siswa,'buku'=>$buku]);
     }
 
     /**
@@ -29,7 +33,19 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate(
+            [
+                'id_buku' => 'required',
+                'id_siswa' => 'required',
+                'tanggal_pinjam' => 'required',
+                'tanggal_kembali' => 'required'
+            ]
+        );
+
+        PeminjamanBuku::create($validate);
+
+        return redirect('peminjaman')
+        ->with('success','Berhasil Melakukan Peminjaman');
     }
 
     /**
@@ -62,5 +78,10 @@ class PeminjamanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function bukti_pinjam(string $id)
+    {
+        $data = PeminjamanBuku::where('id','=',$id)->get();
+        return view('pdf.bukti_pinjam',['data'=> $data]);
     }
 }
