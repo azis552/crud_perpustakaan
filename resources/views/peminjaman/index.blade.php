@@ -93,8 +93,9 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <th>No</th>
+                                        <th>Siswa</th>
                                         <th>Judul</th>
-                                        <th>Tahun Terbit</th>
+                                        <th>Periode Peminjaman</th>
                                         <th>Penulis</th>
                                         <th>Sampul</th>
                                         <th>Aksi</th>
@@ -103,8 +104,9 @@
                                         @foreach ($data as $item)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
+                                                <td>{{ $item->siswa->nama }}</td>
                                                 <td>{{ $item->buku->judul_buku }}</td>
-                                                <td>{{ $item->buku->tahun_terbit }} </td>
+                                                <td>{{ $item->tanggal_pinjam."-".$item->tanggal_kembali }} </td>
                                                 <td>{{ $item->buku->penulis->nama }} </td>
                                                 <td>
                                                     <img src="{{ asset('storage/' . $item->buku->photo) }}" alt=""
